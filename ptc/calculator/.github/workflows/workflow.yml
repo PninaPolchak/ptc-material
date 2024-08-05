@@ -1,0 +1,43 @@
+name: workflow
+
+on:
+  push:
+    branches: [ feature/calculator-assignment-tdd ]
+
+jobs:
+
+  build-and-test-server:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+    - name: Run server tests
+      run: mvn test 
+      working-directory: server
+    - name: Build server Docker image
+      run: docker build -f server/Dockerfile -t server-image server
+    - name: Run server Docker image
+      run: docker run -d -p 8080:8080 server-image
+      
+  build-and-test-client:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+    - name: Install dependencies
+      run: npm install --legacy-peer-deps --prefix client
+    - name: Run client tests
+      run: npm test --prefix client
+    - name: Build client Docker image
+      run: docker build -f client/Dockerfile -t client-image client
+    - name: Run client Docker image
+      run: docker run -d -p 80:80 client-image

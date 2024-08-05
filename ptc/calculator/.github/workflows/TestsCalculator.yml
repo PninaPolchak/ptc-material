@@ -1,0 +1,23 @@
+name: GitHub Actions Calculator
+run-name: Run the workflow
+on: 
+  push:
+    branches:
+      - 'feature/calculator-principles-tdd'
+      
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout to my branch
+        uses: actions/checkout@v4
+        with: 
+          ref: feature/calculator-principles-tdd
+
+      - name: Build client
+        run: docker build -t calc-react-workflow .
+        working-directory: './calculator-shilat/client/src'
+
+      - name: Run client
+        run: docker run --name workflow calc-react-workflow

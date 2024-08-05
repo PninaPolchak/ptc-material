@@ -1,0 +1,36 @@
+name: calculator test
+
+run-name: Calculator app workflow
+'on':
+  workflow_dispatch: null
+  push:
+    branches:
+      - feature/calculator-assignment-TDD
+
+jobs:
+  check-python-and-react-application:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Beyond my branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/calculator-assignment-TDD
+
+      - name: Build python docker image
+        run: docker build -t python-app .
+        working-directory: ./calculator-task/Server
+
+      - name: Run python docker image
+        run: 'docker run -d -p 80:5000 python-app'
+        working-directory: ./calculator-task/Server
+
+      - name: Build react docker image
+        run: docker build -t react-app .
+        working-directory: ./calculator-task/client
+        
+      - name: Run python docker image
+        run: 'docker run -d -i -p 3000:3000 react-app'
+        working-directory: ./calculator-task/client
+        
