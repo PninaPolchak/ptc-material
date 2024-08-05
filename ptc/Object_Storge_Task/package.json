@@ -1,0 +1,10 @@
+{
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "hasard": "^1.6.1",
+    "minio": "^8.0.0",
+    "minio-js": "^1.0.7",
+    "stream": "^0.0.2"
+  }
+}
